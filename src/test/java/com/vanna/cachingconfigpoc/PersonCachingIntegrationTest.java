@@ -18,11 +18,14 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 @SpringBootTest(classes = CachingConfigPocApplication.class)
 public class PersonCachingIntegrationTest {
 
-    @Autowired
-    private CacheManager cacheManager;
+    private final CacheManager cacheManager;
+    private final CacheableService personService;
 
     @Autowired
-    private CacheableService personService;
+    public PersonCachingIntegrationTest(CacheManager cacheManager, CacheableService personService) {
+        this.cacheManager = cacheManager;
+        this.personService = personService;
+    }
 
     @BeforeEach
     public void setupCacheWithSamplePersonnel() {
