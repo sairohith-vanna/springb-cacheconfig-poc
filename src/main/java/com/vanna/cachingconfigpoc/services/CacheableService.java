@@ -20,13 +20,30 @@ public class CacheableService {
 
     @Cacheable(cacheNames = "person", unless = "#result.class == T(com.vanna.cachingconfigpoc.models.Person)")
     public Person getPersonWithCache(String personType) {
-        Person companyPerson;
         try {
             Thread.sleep(5000);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
-        if(personType.equalsIgnoreCase("CONT")) {
+        return this.getPerson(personType);
+    }
+
+    @Cacheable(
+            cacheNames = "person2",
+            unless = "#result.class.getAnnotation(T(com.vanna.cachingconfigpoc.annotations.CacheableClass)) == null"
+    )
+    public Person getPersonWithCacheAnnotation(String personType) {
+        try {
+            Thread.sleep(5000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        return this.getPerson(personType);
+    }
+
+    private Person getPerson(String personType) {
+        Person companyPerson;
+        if (personType.equalsIgnoreCase("CONT")) {
             companyPerson = new Contractor();
             companyPerson.setName("Sai Rohith Reddy Vangala");
             companyPerson.setAssociateId(UUID.randomUUID().toString());

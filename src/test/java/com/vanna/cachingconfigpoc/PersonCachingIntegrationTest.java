@@ -46,4 +46,18 @@ public class PersonCachingIntegrationTest {
         assertEquals(Optional.empty(), Optional.ofNullable(cacheManager.getCache("person"))
                 .map(cx -> cx.get("EMPL", Person.class)));
     }
+
+    @Test
+    void retrievedContractorFromCachedMethodWithAnnotation_whenRetrievedAgain_shouldBeAvailableInCache() {
+        Person person = personService.getPersonWithCacheAnnotation("CONT");
+        assertEquals(Optional.of(person), Optional.ofNullable(cacheManager.getCache("person2"))
+                .map(cx -> cx.get("CONT", Person.class)));
+    }
+
+    @Test
+    void retrievedPersonFromCachedMethodWithAnnotation_whenRetrievedAgain_shouldNotBeAvailableInCache() {
+        Person person = personService.getPersonWithCacheAnnotation("EMPL");
+        assertEquals(Optional.empty(), Optional.ofNullable(cacheManager.getCache("person2"))
+                .map(cx -> cx.get("EMPL", Person.class)));
+    }
 }

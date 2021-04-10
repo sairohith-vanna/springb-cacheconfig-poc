@@ -26,7 +26,7 @@ public class CacheableController {
 
     @GetMapping("cached/get/{personType}")
     public ResponseEntity<Person> getEmployeeWithDataCached(@PathVariable("personType") String personType) {
-        Person newPerson = service.getPersonWithCache(personType);
+        Person newPerson = service.getPersonWithCacheAnnotation(personType);
         return ResponseEntity.ok(newPerson);
     }
 }
