@@ -13,4 +13,12 @@ public class Person {
 
     private String associateId;
     private String name;
+
+    @Override
+    public String toString() {
+        return "Person{" +
+                "associateId='" + associateId + '\'' +
+                ", name='" + name + '\'' +
+                '}';
+    }
 }

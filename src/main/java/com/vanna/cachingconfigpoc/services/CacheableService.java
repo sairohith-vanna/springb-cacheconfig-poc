@@ -2,8 +2,10 @@ package com.vanna.cachingconfigpoc.services;
 
 import com.vanna.cachingconfigpoc.models.Contractor;
 import com.vanna.cachingconfigpoc.models.Person;
+import com.vanna.cachingconfigpoc.repository.PersonRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
@@ -13,6 +15,12 @@ import java.util.UUID;
 public class CacheableService {
 
     Logger logger = LoggerFactory.getLogger(CacheableService.class);
+    private final PersonRepository personRepository;
+
+    @Autowired
+    public CacheableService(PersonRepository personRepository) {
+        this.personRepository = personRepository;
+    }
 
     public Person getPersonWithoutCache() {
         return new Person(UUID.randomUUID().toString(), "Henry H. Martin");
@@ -25,7 +33,10 @@ public class CacheableService {
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
-        return this.getPerson(personType);
+        Person person = personRepository.fetchPersonFromStore(personType);
+        logger.info("RETRIEVED PERSON FROM CLASS BASED CACHE INCLUSION::");
+        logger.info(person.toString());
+        return person;
     }
 
     @Cacheable(
@@ -38,20 +49,9 @@ public class CacheableService {
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
-        return this.getPerson(personType);
-    }
-
-    private Person getPerson(String personType) {
-        Person companyPerson;
-        if (personType.equalsIgnoreCase("CONT")) {
-            companyPerson = new Contractor();
-            companyPerson.setName("Sai Rohith Reddy Vangala");
-            companyPerson.setAssociateId(UUID.randomUUID().toString());
-            ((Contractor) companyPerson).setContractId(UUID.randomUUID().toString());
-            ((Contractor) companyPerson).setPartnerCompany("Vanna InfoTech");
-        } else {
-            companyPerson = new Person("Sai Rohith Reddy Vangala", UUID.randomUUID().toString());
-        }
-        return companyPerson;
+        Person person = personRepository.fetchPersonFromStore(personType);
+        logger.info("RETRIEVED PERSON FROM ANNOTATION BASED CACHE INCLUSION::");
+        logger.info(person.toString());
+        return person;
     }
 }
