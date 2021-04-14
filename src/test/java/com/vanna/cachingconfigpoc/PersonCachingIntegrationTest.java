@@ -31,6 +31,7 @@ public class PersonCachingIntegrationTest {
     public void setupCacheWithSamplePersonnel() {
         personService.getPersonWithCache("EMPL");
         personService.getPersonWithCache("CONT");
+        personService.getPersonWithCache("PMTE");
     }
 
     @Test
@@ -59,5 +60,12 @@ public class PersonCachingIntegrationTest {
         Person person = personService.getPersonWithCacheAnnotation("EMPL");
         assertEquals(Optional.empty(), Optional.ofNullable(cacheManager.getCache("person2"))
                 .map(cx -> cx.get("EMPL", Person.class)));
+    }
+
+    @Test
+    void retrievedPermanentEmployeeFromCacheMethodWithAnnotation_whenRetrievedAgain_shouldNotBeAvailable() {
+        Person person = personService.getPersonWithCacheAnnotation("PMTE");
+        assertEquals(Optional.empty(), Optional.ofNullable(cacheManager.getCache("person2"))
+                .map(pecx -> pecx.get("PMTE", Person.class)));
     }
 }

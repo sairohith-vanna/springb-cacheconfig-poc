@@ -1,6 +1,5 @@
 package com.vanna.cachingconfigpoc.services;
 
-import com.vanna.cachingconfigpoc.models.Contractor;
 import com.vanna.cachingconfigpoc.models.Person;
 import com.vanna.cachingconfigpoc.repository.PersonRepository;
 import org.slf4j.Logger;
