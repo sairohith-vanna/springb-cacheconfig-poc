@@ -26,4 +26,30 @@ public class PersonRepository {
         }
         return companyPerson;
     }
+
+    public Person fetchPersonFromStoreWithAssociateId(String associateId, String personType) {
+        Person companyPerson;
+        if (personType.equalsIgnoreCase("CONT")) {
+            companyPerson = new Contractor("Vanna Infotech", UUID.randomUUID().toString());
+            companyPerson.setName("Sai Rohith Reddy Vangala");
+            companyPerson.setAssociateId(associateId);
+        } else if (personType.equalsIgnoreCase("PMTE")) {
+            companyPerson = new PermanentEmployee("EMP003", LocalDate.now());
+            companyPerson.setName("Harry Potter");
+            companyPerson.setAssociateId(UUID.randomUUID().toString());
+        } else {
+            companyPerson = new Person(UUID.randomUUID().toString(), "Sai Rohith Reddy Vangala");
+        }
+        return companyPerson;
+    }
+
+    public Person updatePerson(String associateId, String personName) {
+        Person person = fetchPersonFromStoreWithAssociateId(associateId, "CONT");
+        person.setName(personName);
+        return person;
+    }
+
+    public boolean deletePerson() {
+        return true;
+    }
 }
